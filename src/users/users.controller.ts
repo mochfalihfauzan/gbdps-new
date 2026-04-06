@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -11,7 +12,14 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() data: { email: string; name?: string }) {
-    return this.usersService.create(data);
+  async register(@Body() dto: CreateUserDto) {
+    try {
+      await this.usersService.register(dto);
+      return { data: 'OK' };
+    } catch (error) {
+      throw new BadRequestException({
+        error: 'Email sudah terdaftar atau password invalid',
+      });
+    }
   }
 }
