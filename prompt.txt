@@ -1,0 +1,24 @@
+1. (Planning)
+    Buatkan issue.md, berisi planning untuk membuat ini :
+
+    Buat projek baru di folder ini
+
+    Menggunakan Node js
+
+    Dan gunakan dependency :
+    - Nest js
+    - Prisma
+    - Postgresql
+
+    Jangan terlalu low level atau detail
+
+    Cukup instruksikan secara high level
+
+    Nanti document planning nya akan digunakan oleh Programmer atau model yang lebih murah untuk di implementasikan
+
+
+2. (Implementasi)
+    Kerjakan github issue : https://github.com/mochfalihfauzan/gbdps-new/issues/2
+
+3. (Push github)
+    Buatkan pull request ke branch main di github atas perubahan ini
