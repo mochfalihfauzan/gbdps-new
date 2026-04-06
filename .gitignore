@@ -42,3 +42,6 @@ lerna-debug.log*
 .env.sample
 .env.local
 .env.*.local
+
+# Local files
+prompt.txt
