@@ -1,12 +1,14 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
@@ -32,5 +34,34 @@ export class UsersService {
         password: hashedPassword,
       },
     });
+  }
+
+  async login(dto: LoginUserDto): Promise<string> {
+    const { email, password } = dto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Email atau password salah');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Email atau password salah');
+    }
+
+    const token = randomUUID();
+
+    await this.prisma.session.create({
+      data: {
+        token,
+        user_id: user.id,
+      },
+    });
+
+    return token;
   }
 }
