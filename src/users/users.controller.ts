@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, Post, BadRequestException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { AuthGuard } from '../common/guards/auth.guard';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -34,5 +36,18 @@ export class UsersController {
         error: 'Email atau password salah',
       });
     }
+  }
+
+  @Get('current')
+  @UseGuards(AuthGuard)
+  async getCurrentUser(@CurrentUser() user: any) {
+    return {
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        created_at: user.created_at,
+      },
+    };
   }
 }
