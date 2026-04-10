@@ -64,4 +64,10 @@ export class UsersService {
 
     return token;
   }
+
+  async logout(token: string): Promise<void> {
+    await this.prisma.session.delete({
+      where: { token },
+    });
+  }
 }
