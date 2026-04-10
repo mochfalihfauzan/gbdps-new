@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, BadRequestException, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Req, BadRequestException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -49,5 +49,16 @@ export class UsersController {
         created_at: user.created_at,
       },
     };
+  }
+
+  @Delete('logout')
+  @UseGuards(AuthGuard)
+  async logout(@Req() request: any) {
+    const authHeader = request.headers.authorization;
+    const token = authHeader.split(' ')[1];
+
+    await this.usersService.logout(token);
+
+    return { data: 'OK' };
   }
 }
