@@ -54,10 +54,7 @@ export class UsersController {
   @Delete('logout')
   @UseGuards(AuthGuard)
   async logout(@Req() request: any) {
-    const authHeader = request.headers.authorization;
-    const token = authHeader.split(' ')[1];
-
-    await this.usersService.logout(token);
+    await this.usersService.logout(request.token);
 
     return { data: 'OK' };
   }

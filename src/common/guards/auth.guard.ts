@@ -32,6 +32,7 @@ export class AuthGuard implements CanActivate {
     }
 
     request.user = session.user;
+    request.token = token;
 
     return true;
   }
