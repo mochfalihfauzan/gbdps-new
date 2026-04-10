@@ -16,14 +16,8 @@ export class UsersController {
 
   @Post()
   async register(@Body() dto: CreateUserDto) {
-    try {
-      await this.usersService.register(dto);
-      return { data: 'OK' };
-    } catch (error) {
-      throw new BadRequestException({
-        error: 'Email sudah terdaftar atau password invalid',
-      });
-    }
+    await this.usersService.register(dto);
+    return { data: 'OK' };
   }
 
   @Post('login')
